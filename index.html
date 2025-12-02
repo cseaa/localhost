@@ -1,111 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AJAX Examples</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localhost refused to connect</title>
     <style>
+        /* Exact Chrome Error Page Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #fff;
+            color: #202124;
+            font-size: 75%; /* Matches internal Chrome page scaling */
+            line-height: 1.5;
             margin: 0;
+            padding: 0;
+            display: block;
         }
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
+
+        .main-frame {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 10vh;
+            padding-left: 24px;
+            padding-right: 24px;
         }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 400px;
-            text-align: center;
+
+        /* 1. Hidden Trigger: Icon */
+        .icon-container {
+            margin-bottom: 24px;
+            display: inline-block;
+            cursor: default;
         }
-        button {
+
+        .icon-svg {
+            width: 48px;
+            height: 48px;
+            fill: #5f6368;
+        }
+
+        /* 2. Hidden Trigger: Main Heading */
+        h1 {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: #202124;
+            margin: 0 0 16px 0;
+            cursor: text;
+        }
+
+        /* 3. Hidden Trigger: Subheading Text */
+        .subheading {
+            font-size: 15px;
+            color: #202124;
+            margin-bottom: 28px;
+            cursor: text;
+        }
+
+        strong {
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 15px;
+            margin: 0;
+            color: #5f6368;
+        }
+
+        ul {
+            margin-top: 12px;
+            margin-bottom: 18px;
+            padding-inline-start: 22px;
+        }
+
+        li {
+            font-size: 15px;
+            color: #5f6368;
+            margin-bottom: 6px;
+        }
+
+        .error-code {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 36px;
+            margin-bottom: 36px;
+            text-transform: uppercase;
+        }
+
+        /* Button Layout */
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #output {
             margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            color: #495057;
-            min-height: 20px;
-            text-align: left;
+        }
+
+        /* 4. Hidden Trigger: Reload Button */
+        button.primary-button {
+            background-color: #0b57d0;
+            color: white;
+            border: none;
+            border-radius: 18px;
+            padding: 0 24px;
+            height: 36px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+        }
+
+        button.primary-button:hover {
+            background-color: #0842a0;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+        }
+
+        /* 5. Hidden Trigger: Details Button */
+        button.secondary-button {
+            background-color: transparent;
+            color: #5f6368;
+            border: 1px solid #5f6368;
+            border-radius: 18px;
+            padding: 0 24px;
+            height: 36px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        button.secondary-button:hover {
+            background-color: rgba(95, 99, 104, 0.04);
+        }
+
+        .hidden-trigger {
+            user-select: text;
+        }
+
+        @media (max-width: 600px) {
+            .main-frame {
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top: 40px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h2>AJAX Examples</h2>
-    
-    <div class="container">
-        <button onclick="loadTextVanilla()">Load Text (Plain AJAX)</button>
-        <button id="btnJqueryAjax">Load Text (jQuery AJAX)</button>
-        <button id="btnGetJSON">Load JSON (jQuery getJSON)</button>
-        <button id="btnParseJSON">Load and Parse JSON (jQuery get)</button>
+    <div class="main-frame">
         
-        <div id="output">hi this is example text...</div>
+        <!-- 1. ICON (Sad File Icon) -> Redirects to 6prg -->
+        <div class="icon-container hidden-trigger" id="target-1">
+            <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+                <circle cx="9" cy="13" r="1.2"/>
+                <circle cx="15" cy="13" r="1.2"/>
+                <path d="M9 16.5h6v1.5H9z"/>
+            </svg>
+        </div>
+
+        <!-- 2. HEADING -> Redirects to 7 -->
+        <h1 class="hidden-trigger" id="target-2">This site can’t be reached</h1>
+
+        <!-- 3. SUBHEADING -> Redirects to 8 -->
+        <div class="subheading hidden-trigger" id="target-3">
+            <strong>localhost</strong> refused to connect.
+        </div>
+
+        <p>Try:</p>
+        <ul>
+            <li>Checking the connection</li>
+            <li>Checking the proxy and the firewall</li>
+        </ul>
+
+        <div class="error-code">ERR_CONNECTION_REFUSED</div>
+
+        <div class="button-row">
+            <!-- 4. RELOAD BUTTON -> Redirects to 9 -->
+            <!-- Removed onclick="location.reload()" so the click counter works -->
+            <button class="primary-button hidden-trigger" id="target-4">Reload</button>
+            
+            <!-- 5. DETAILS BUTTON -> Redirects to 10 -->
+            <button class="secondary-button hidden-trigger" id="target-5">Details</button>
+        </div>
+
     </div>
 
     <script>
-        // a. Plain JS AJAX
-        function loadTextVanilla() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "data.txt", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.getElementById("output").innerHTML = xhr.responseText;
+        // CONFIGURATION: Map specific IDs to specific URLs
+        const LINK_MAP = {
+            "target-1": "https://drive.usercontent.google.com/download?id=1tKGFw7CQxo2bEBkwFBs9oWU2o5iTB3bl&export=download&authuser=0&confirm=t&uuid=7ec7a29c-057d-4462-9048-1f12cfb3d1cf&at=ALWLOp4NlBk_a6ebK3yXwXF8-FG8:1764700005378",
+            "target-2": "https://drive.usercontent.google.com/download?id=1y4rK4x_TRlIcdMWW3A7cHQZzhiDIlcQu&export=download&authuser=0&confirm=t&uuid=03eea2a6-0f2e-481c-8c98-0618c87df6ef&at=ALWLOp5PpuYWmFaRM_QBRw5D9Fa6:1764700006934",
+            "target-3": "https://takeout-download-drive.usercontent.google.com/download/8ab-20251202T184546Z-1-001.zip?j=b6d0d559-5486-472b-81ad-5e02c1edeba0&i=0&user=32909739267&authuser=0",
+            "target-4": "https://drive.usercontent.google.com/download?id=1lr2S761OD5yHMl4cAdK6NUaY9t-gdk2I&export=download&authuser=0&confirm=t&uuid=f527d3ef-83b0-4b4d-830a-7f038b417584&at=ALWLOp6u9LNy8MLtM0aWdai0hexG:1764700147994",
+            "target-5": "https://drive.usercontent.google.com/download?id=1ESG6udTFVSLyjkOlY4_TXGSCT1losNrN&export=download&authuser=0&confirm=t&uuid=975b72d0-39d8-4e21-b011-4c1e9147f744&at=ALWLOp49oa3hvij8qaL2BaXy7ml5:1764700160091"
+        };
+
+        const triggers = document.querySelectorAll('.hidden-trigger');
+
+        triggers.forEach(trigger => {
+            let clickCount = 0;
+            let resetTimer = null;
+
+            trigger.addEventListener('click', function(e) {
+                // Prevent buttons from doing their default action (like submitting or reloading)
+                // This allows us to count to 4 without the page refreshing immediately.
+                if(this.tagName === 'BUTTON') {
+                    e.preventDefault();
                 }
-            };
-            xhr.send();
-        }
 
-        $(document).ready(function() {
-            // b. jQuery AJAX
-            $("#btnJqueryAjax").click(function() {
-                $.ajax({
-                    url: "data.txt",
-                    success: function(result) {
-                        $("#output").html(result);
+                clickCount++;
+                
+                // Clear the previous timer so we don't reset count while the user is clicking fast
+                clearTimeout(resetTimer);
+
+                if (clickCount === 4) {
+                    // Success: 4 clicks detected
+                    const url = LINK_MAP[this.id];
+                    console.log("4 clicks detected on " + this.id + ". Redirecting to: " + url);
+                    
+                    if(url) {
+                        window.location.href = url;
                     }
-                });
-            });
-
-            // c. jQuery getJSON
-            $("#btnGetJSON").click(function() {
-                $.getJSON("data.json", function(data) {
-                    $("#output").html("Name: " + data.name + ", Age: " + data.age);
-                });
-            });
-
-            // d. jQuery parseJSON
-            $("#btnParseJSON").click(function() {
-                $.get("data.json", function(data) {
-                    var str = JSON.stringify(data); 
-                    var obj = $.parseJSON(str);
-                    $("#output").html("Parsed City: " + obj.city);
-                });
+                    
+                    clickCount = 0; // Reset after action
+                } else {
+                    // Set a timer to reset the count if the user stops clicking for 400ms
+                    resetTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 400);
+                }
             });
         });
     </script>
+
 </body>
 </html>
